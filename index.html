@@ -750,7 +750,12 @@
 
     /* ── RESPONSIVE ── */
     /* ── HAMBURGER ── */
-    .mobile-menu-btn { display: none; }
+    .mobile-menu-btn { display: none !important; position: relative; z-index: 1002; }
+    .mobile-only-nav { display: none; }
+    @media (max-width: 768px) {
+      nav .mobile-menu-btn { display: flex !important; align-items: center; justify-content: center; }
+      .mobile-only-nav { display: list-item !important; }
+    }
 
     /* ── TABLET (≤900px) ── */
     @media (max-width: 900px) {
@@ -766,8 +771,12 @@
     /* ── MOBILE (≤768px) ── */
     @media (max-width: 768px) {
       /* Navbar */
-      nav { padding: 0 18px; }
+      nav { padding: 0 14px; }
       .mobile-menu-btn { display: flex !important; }
+      .nav-icons { gap: 4px; }
+      .nav-icons .icon-btn { padding: 10px; min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+      /* Hide wishlist button from nav on mobile - access via hamburger menu instead */
+      .nav-icons > button[onclick*="toggleWishlist_sidebar"] { display: none; }
       .nav-links {
         display: none !important;
         flex-direction: column;
@@ -777,7 +786,7 @@
         padding: 10px 0 20px;
         border-bottom: 2px solid var(--gold-dim);
         box-shadow: 0 12px 32px rgba(44,30,15,0.12);
-        z-index: 999;
+        z-index: 1001;
         max-height: calc(100vh - 72px);
         overflow-y: auto;
         animation: fadeIn .2s ease;
@@ -1286,17 +1295,14 @@
     <li><a href="#" class="nav-link" onclick="showPage('new-arrivals');return false">New Arrivals</a></li>
     <li><a href="#" class="nav-link" onclick="showPage('gallery');return false">Gallery</a></li>
     <li><a href="#" class="nav-link" onclick="showPage('contact');return false">Contact Us</a></li>
+    <li class="mobile-only-nav"><a href="#" class="nav-link" onclick="toggleWishlist_sidebar();return false">❤️ My Wishlist</a></li>
   </ul>
   <div class="nav-icons">
-    <!-- Account button — changes based on login state -->
-    <div class="user-menu-wrap" id="userMenuWrap">
-      <button class="icon-btn" id="userNavBtn" onclick="toggleUserMenu()" title="Account">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
-      </button>
-      <div class="user-dropdown" id="userDropdown">
-        <!-- filled by JS -->
-      </div>
-    </div>
+    <!-- Wishlist button -->
+    <button class="icon-btn" onclick="toggleWishlist_sidebar()" title="Wishlist">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="cart-badge" id="wlBadge" style="display:none">0</span>
+    </button>
     <button class="icon-btn" onclick="toggleCart()" title="Cart">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span class="cart-badge" id="cartBadge">0</span>
@@ -1307,7 +1313,7 @@
   </div>
 </nav>
 <!-- Mobile nav overlay -->
-<div id="mobileNavOverlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;z-index:998;background:rgba(44,30,15,0.3)"></div>
+<div id="mobileNavOverlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(44,30,15,0.4)"></div>
 
 
 
@@ -1351,7 +1357,7 @@
       <div class="feature-item">
         <div class="feature-icon">◎</div>
         <div class="feature-title">Secure Payments</div>
-        <div class="feature-sub">UPI, cards & net banking accepted</div>
+        <div class="feature-sub">UPI payments confirmed on WhatsApp</div>
       </div>
     </div>
   </div>
@@ -1596,26 +1602,22 @@
           <div class="section-label">Find Us</div>
           <h2 class="section-title" style="font-size:32px">We'd Love to<br><em>Hear From You</em></h2>
           <div class="gold-divider"></div>
-          </div>
           <div class="contact-info-item">
-            <div class="contact-icon"></div>
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
             <div>
               <div class="contact-info-label">Phone</div>
               <div class="contact-info-val">+91 77908 78766<br>+91 84420 34994</div>
             </div>
           </div>
           <div class="contact-info-item">
-            <div class="contact-icon"></div>
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
             <div>
               <div class="contact-info-label">Email</div>
-              <div class="contact-info-val">hello@shortly.coming<br>vastraayu@gmail.com</div>
-            </div>
-          </div>
-          <div class="contact-info-item">
-            <div class="contact-icon"></div>
-            <div>
-              <div class="contact-info-label">Hours</div>
-              <div class="contact-info-val">Mon–Sun: 9am – 10pm IST</div>
+              <div class="contact-info-val">vastraayu@gmail.com</div>
             </div>
           </div>
         </div>
@@ -1728,242 +1730,18 @@
       <div class="cart-row"><span>Shipping</span><span id="cartShipping">Free</span></div>
       <div class="cart-row total"><span>Total</span><span id="cartTotal">₹0</span></div>
     </div>
-    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+    <button class="checkout-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp</button>
   </div>
 </div>
 
-<!-- ═══ UPI CHECKOUT MODAL ═══ -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeCheckout()">✕</button>
-    <div id="checkoutContent">
-      <p class="modal-title">Checkout</p>
-      <div class="modal-gold-line"></div>
-      <div class="upi-order-summary" id="checkoutSummary"></div>
-      <div class="form-group">
-        <label class="form-label">Delivery Address</label>
-        <textarea class="form-input" rows="3" id="deliveryAddress" placeholder="Enter your full delivery address…"></textarea>
-      </div>
-      <div style="border:1px solid var(--border);padding:20px;margin-bottom:20px">
-        <p style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;text-align:center">Pay via UPI</p>
-        <div class="upi-qr">
-          <!-- QR Code SVG Pattern -->
-          <svg viewBox="0 0 148 148" xmlns="http://www.w3.org/2000/svg">
-            <rect width="148" height="148" fill="white"/>
-            <!-- Position Detection Patterns -->
-            <rect x="10" y="10" width="35" height="35" fill="black"/>
-            <rect x="14" y="14" width="27" height="27" fill="white"/>
-            <rect x="18" y="18" width="19" height="19" fill="black"/>
-            <rect x="103" y="10" width="35" height="35" fill="black"/>
-            <rect x="107" y="14" width="27" height="27" fill="white"/>
-            <rect x="111" y="18" width="19" height="19" fill="black"/>
-            <rect x="10" y="103" width="35" height="35" fill="black"/>
-            <rect x="14" y="107" width="27" height="27" fill="white"/>
-            <rect x="18" y="111" width="19" height="19" fill="black"/>
-            <!-- Data Modules (simulated) -->
-            <rect x="52" y="10" width="7" height="7" fill="black"/>
-            <rect x="66" y="10" width="7" height="7" fill="black"/>
-            <rect x="80" y="10" width="7" height="7" fill="black"/>
-            <rect x="94" y="10" width="7" height="7" fill="black"/>
-            <rect x="52" y="24" width="7" height="7" fill="black"/>
-            <rect x="73" y="17" width="7" height="7" fill="black"/>
-            <rect x="87" y="17" width="7" height="7" fill="black"/>
-            <rect x="59" y="31" width="7" height="7" fill="black"/>
-            <rect x="80" y="31" width="7" height="7" fill="black"/>
-            <rect x="10" y="52" width="7" height="7" fill="black"/>
-            <rect x="24" y="52" width="7" height="7" fill="black"/>
-            <rect x="38" y="52" width="7" height="7" fill="black"/>
-            <rect x="52" y="52" width="7" height="7" fill="black"/>
-            <rect x="66" y="52" width="7" height="7" fill="black"/>
-            <rect x="87" y="52" width="7" height="7" fill="black"/>
-            <rect x="108" y="52" width="7" height="7" fill="black"/>
-            <rect x="122" y="52" width="7" height="7" fill="black"/>
-            <rect x="17" y="59" width="7" height="7" fill="black"/>
-            <rect x="31" y="59" width="7" height="7" fill="black"/>
-            <rect x="59" y="59" width="7" height="7" fill="black"/>
-            <rect x="80" y="59" width="7" height="7" fill="black"/>
-            <rect x="94" y="59" width="7" height="7" fill="black"/>
-            <rect x="115" y="59" width="7" height="7" fill="black"/>
-            <rect x="10" y="66" width="7" height="7" fill="black"/>
-            <rect x="38" y="66" width="7" height="7" fill="black"/>
-            <rect x="52" y="66" width="7" height="7" fill="black"/>
-            <rect x="66" y="66" width="7" height="7" fill="black"/>
-            <rect x="73" y="66" width="7" height="7" fill="black"/>
-            <rect x="94" y="66" width="7" height="7" fill="black"/>
-            <rect x="108" y="66" width="7" height="7" fill="black"/>
-            <rect x="129" y="66" width="7" height="7" fill="black"/>
-            <rect x="17" y="73" width="7" height="7" fill="black"/>
-            <rect x="45" y="73" width="7" height="7" fill="black"/>
-            <rect x="80" y="73" width="7" height="7" fill="black"/>
-            <rect x="101" y="73" width="7" height="7" fill="black"/>
-            <rect x="122" y="73" width="7" height="7" fill="black"/>
-            <rect x="10" y="80" width="7" height="7" fill="black"/>
-            <rect x="31" y="80" width="7" height="7" fill="black"/>
-            <rect x="59" y="80" width="7" height="7" fill="black"/>
-            <rect x="73" y="80" width="7" height="7" fill="black"/>
-            <rect x="87" y="80" width="7" height="7" fill="black"/>
-            <rect x="108" y="80" width="7" height="7" fill="black"/>
-            <rect x="129" y="80" width="7" height="7" fill="black"/>
-            <rect x="24" y="87" width="7" height="7" fill="black"/>
-            <rect x="45" y="87" width="7" height="7" fill="black"/>
-            <rect x="66" y="87" width="7" height="7" fill="black"/>
-            <rect x="94" y="87" width="7" height="7" fill="black"/>
-            <rect x="115" y="87" width="7" height="7" fill="black"/>
-            <rect x="52" y="103" width="7" height="7" fill="black"/>
-            <rect x="66" y="103" width="7" height="7" fill="black"/>
-            <rect x="80" y="103" width="7" height="7" fill="black"/>
-            <rect x="108" y="103" width="7" height="7" fill="black"/>
-            <rect x="129" y="103" width="7" height="7" fill="black"/>
-            <rect x="59" y="110" width="7" height="7" fill="black"/>
-            <rect x="73" y="110" width="7" height="7" fill="black"/>
-            <rect x="94" y="110" width="7" height="7" fill="black"/>
-            <rect x="115" y="110" width="7" height="7" fill="black"/>
-            <rect x="52" y="117" width="7" height="7" fill="black"/>
-            <rect x="80" y="117" width="7" height="7" fill="black"/>
-            <rect x="101" y="117" width="7" height="7" fill="black"/>
-            <rect x="129" y="117" width="7" height="7" fill="black"/>
-            <rect x="59" y="124" width="7" height="7" fill="black"/>
-            <rect x="73" y="124" width="7" height="7" fill="black"/>
-            <rect x="87" y="124" width="7" height="7" fill="black"/>
-            <rect x="108" y="124" width="7" height="7" fill="black"/>
-            <rect x="122" y="124" width="7" height="7" fill="black"/>
-            <!-- Timing Patterns -->
-            <rect x="45" y="17" width="7" height="7" fill="black"/>
-            <rect x="45" y="31" width="7" height="7" fill="black"/>
-            <rect x="45" y="45" width="7" height="7" fill="black"/>
-            <rect x="17" y="45" width="7" height="7" fill="black"/>
-            <rect x="31" y="45" width="7" height="7" fill="black"/>
-          </svg>
-        </div>
-        <div class="upi-id-box">vastraayu@upi</div>
-        <p style="text-align:center;font-size:13px;color:var(--cream-dim);font-style:italic;margin-bottom:16px">Scan with any UPI app — GPay, PhonePe, Paytm, or BHIM</p>
-        <div class="form-group" style="margin-bottom:0">
-          <label class="form-label">Or enter your UPI ID</label>
-          <div style="display:flex;gap:10px">
-            <input class="form-input" type="text" id="upiId" placeholder="yourname@upi" style="flex:1">
-            <button class="pay-btn" onclick="processPayment()" style="width:auto;padding:12px 20px;margin-top:0;font-size:11px">Pay</button>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══ LOGIN MODAL ═══ -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal" style="width:440px">
-    <button class="modal-close" onclick="closeLoginModal()">✕</button>
-    <p class="modal-title" id="loginModalTitle">My Account</p>
-    <div class="modal-gold-line"></div>
 
-    <!-- Sign In Pane -->
-    <div id="loginPane">
-      <div class="login-tabs" style="margin-bottom:24px">
-        <button class="login-tab active" onclick="switchLoginTab('login',this)">Sign In</button>
-        <button class="login-tab" onclick="switchLoginTab('register',this)">Create Account</button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="loginEmail" placeholder="priya@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••">
-      </div>
-      <p class="auth-error" id="loginError"></p>
-      <button class="btn-gold" style="width:100%;padding:14px;font-size:12px;letter-spacing:2px;margin-top:4px" onclick="handleLogin()">Sign In</button>
-      <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--cream-dim)">
-        No account? <a href="#" style="color:var(--gold)" onclick="switchLoginTab('register',null);return false">Create one free</a>
-      </p>
-    </div>
-
-    <!-- Register Pane -->
-    <div id="registerPane" style="display:none">
-      <div class="login-tabs" style="margin-bottom:24px">
-        <button class="login-tab" onclick="switchLoginTab('login',this)">Sign In</button>
-        <button class="login-tab active" onclick="switchLoginTab('register',this)">Create Account</button>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input class="form-input" type="text" id="regFirst" placeholder="Priya">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" id="regLast" placeholder="Sharma">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="regEmail" placeholder="priya@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password <span style="font-size:11px;color:var(--muted)">(min 6 characters)</span></label>
-        <input class="form-input" type="password" id="regPassword" placeholder="Create a password">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Confirm Password</label>
-        <input class="form-input" type="password" id="regConfirm" placeholder="Repeat password">
-      </div>
-      <p class="auth-error" id="registerError"></p>
-      <button class="btn-gold" style="width:100%;padding:14px;font-size:12px;letter-spacing:2px;margin-top:4px" onclick="handleRegister()">Create Account</button>
-      <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--cream-dim)">
-        Already registered? <a href="#" style="color:var(--gold)" onclick="switchLoginTab('login',null);return false">Sign in here</a>
-      </p>
-    </div>
-
-    <!-- Storage notice -->
-    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:20px;font-style:italic;letter-spacing:.5px">
-      🔒 Your data is saved securely in your browser's local storage
-    </p>
-  </div>
-</div>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo" style="display:flex;align-items:center;gap:10px">
-        VASTRAAYU
-        <img src="data:image/png;base64,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" alt="Logo" style="height:28px;width:28px;object-fit:contain;filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(1.5)">
-      </div>
-      <p class="footer-about">Where India's finest saree-weaving traditions meet the modern wardrobe. Crafted by artisans, curated with love.</p>
-      <div class="social-icons" style="margin-top:20px">
-        <a class="social-icon" href="#" title="Instagram">📷</a>
-        <a class="social-icon" href="#" title="Facebook">📘</a>
-        <a class="social-icon" href="#" title="Pinterest">📌</a>
-        <a class="social-icon" href="#" title="YouTube">▶</a>
-      </div>
-    </div>
-    <div>
-      <p class="footer-col-title">Collections</p>
-      <ul class="footer-links">
-        <li><a href="#" onclick="showPage('sarees','banarasi');return false">Banarasi Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','kanjeevaram');return false">Kanjeevaram Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','designer');return false">Designer Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','handloom');return false">Handloom Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','silk');return false">Silk Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','georgette');return false">Georgette Sarees</a></li>
-        <li><a href="#" onclick="showPage('sarees','cotton');return false">Cotton Sarees</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-col-title">Quick Links</p>
-      <ul class="footer-links">
-        <li><a href="#" onclick="showPage('home');return false">Home</a></li>
-        <li><a href="#" onclick="showPage('about');return false">About Us</a></li>
-        <li><a href="#" onclick="showPage('gallery');return false">Gallery</a></li>
-        <li><a href="#" onclick="showPage('new-arrivals');return false">New Arrivals</a></li>
-        <li><a href="#" onclick="showPage('contact');return false">Contact Us</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-col-title">Contact</p>
-      <div class="footer-contact-item"> +91 7790 878766, +91 8442 034994</div>
-      <div class="footer-contact-item"> vastraayu@gmail.com</div>
-      <div class="footer-contact-item"> Mon–Sun: 9am – 10pm IST</div>
-    </div>
-  </div>
   <div class="footer-bottom">
     <span>© 2025 VastraAyu. All rights reserved.</span>
     <span>
@@ -2137,8 +1915,11 @@ function updateCartUI() {
     cart.forEach(item => {
       const div = document.createElement('div');
       div.className = 'cart-item';
+      const imgContent = item.img
+        ? `<img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;display:block">`
+        : (item.emoji || '');
       div.innerHTML = `
-        <div class="cart-item-img ${item.bg}" style="font-size:28px;flex-shrink:0;width:70px;height:90px;display:flex;align-items:center;justify-content:center">${item.emoji}</div>
+        <div class="cart-item-img ${item.bg || ''}" style="font-size:28px;flex-shrink:0;width:70px;height:90px;display:flex;align-items:center;justify-content:center;overflow:hidden">${imgContent}</div>
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
           <div class="cart-item-cat">${item.cat}</div>
@@ -2160,164 +1941,21 @@ function toggleCart() {
   document.getElementById('cartOverlay').classList.toggle('open');
 }
 
-/* ─── CHECKOUT / UPI ─── */
-function openCheckout() {
-  if (cart.length === 0) return;
-  toggleCart();
+/* ─── CHECKOUT VIA WHATSAPP ─── */
+function checkoutViaWhatsApp() {
+  if (cart.length === 0) { showToast('Your bag is empty'); return; }
   const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
   const shipping = subtotal >= 2999 ? 0 : 149;
   const total = subtotal + shipping;
-  const summary = document.getElementById('checkoutSummary');
-  let rows = cart.map(i => `<div class="upi-order-row"><span>${i.name} × ${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('');
-  rows += `<div class="upi-order-row"><span>Shipping</span><span>${shipping===0?'Free':'₹'+shipping}</span></div>`;
-  rows += `<div class="upi-order-row total"><span>Total</span><span>₹${total.toLocaleString('en-IN')}</span></div>`;
-  summary.innerHTML = rows;
-  document.getElementById('checkoutContent').style.display = 'block';
-  document.getElementById('checkoutModal').classList.add('open');
-}
-
-function closeCheckout() { document.getElementById('checkoutModal').classList.remove('open'); }
-
-function processPayment() {
-  const upiId = document.getElementById('upiId').value.trim();
-  const addr = document.getElementById('deliveryAddress').value.trim();
-  if (!addr) { showToast('Please enter delivery address'); return; }
-  const total = cart.reduce((s, c) => s + c.price * c.qty, 0) + (cart.reduce((s,c)=>s+c.price*c.qty,0) >= 2999 ? 0 : 149);
-  document.getElementById('checkoutContent').innerHTML = `
-    <div class="success-msg">
-      <div class="checkmark">✅</div>
-      <h3>Order Confirmed!</h3>
-      <p>Your order of <strong style="color:var(--gold)">₹${total.toLocaleString('en-IN')}</strong> has been placed.</p>
-      <p style="margin-top:8px">UPI Reference: <strong style="color:var(--gold)">#VR${Math.floor(Math.random()*900000+100000)}</strong></p>
-      <p style="margin-top:12px">We'll ship within 3–5 business days.</p>
-      <button class="btn-gold" style="margin-top:24px" onclick="closeCheckout();clearCart()">Continue Shopping</button>
-    </div>`;
-  setTimeout(() => { cart = []; updateCartUI(); }, 500);
+  const itemLines = cart.map(i => `• ${i.name} (${i.cat}) x${i.qty} = Rs.${(i.price*i.qty).toLocaleString('en-IN')}`).join('\n');
+  const msg = `Namaste! I'd like to confirm this order from VastraAyu:\n\n${itemLines}\n\nSubtotal: Rs.${subtotal.toLocaleString('en-IN')}\nShipping: ${shipping===0?'Free':'Rs.'+shipping}\nTotal: Rs.${total.toLocaleString('en-IN')}\n\nPlease share delivery details and payment options. Thank you!`;
+  window.open('https://wa.me/917877723498?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function clearCart() { cart = []; updateCartUI(); }
 
 /* ─── LOGIN MODAL ─── */
-/* ─── AUTH SYSTEM (localStorage) ─── */
-function getUsers() {
-  try { return JSON.parse(localStorage.getItem('vastraayu_users') || '[]'); } catch(e) { return []; }
-}
-function saveUsers(users) {
-  localStorage.setItem('vastraayu_users', JSON.stringify(users));
-}
-function getCurrentUser() {
-  try { return JSON.parse(localStorage.getItem('vastraayu_session') || 'null'); } catch(e) { return null; }
-}
-function setCurrentUser(user) {
-  localStorage.setItem('vastraayu_session', JSON.stringify(user));
-}
-function clearSession() {
-  localStorage.removeItem('vastraayu_session');
-}
 
-function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass  = document.getElementById('loginPassword').value;
-  const errEl = document.getElementById('loginError');
-  errEl.textContent = '';
-  if (!email || !pass) { errEl.textContent = 'Please fill in all fields.'; return; }
-  const users = getUsers();
-  const user  = users.find(u => u.email === email);
-  if (!user) { errEl.textContent = 'No account found with this email.'; return; }
-  if (user.password !== btoa(pass)) { errEl.textContent = 'Incorrect password.'; return; }
-  setCurrentUser({ name: user.firstName + ' ' + user.lastName, email: user.email, firstName: user.firstName });
-  closeLoginModal();
-  updateUserUI();
-  showToast('✓ Welcome back, <span>' + user.firstName + '!</span>');
-}
-
-function handleRegister() {
-  const first   = document.getElementById('regFirst').value.trim();
-  const last    = document.getElementById('regLast').value.trim();
-  const email   = document.getElementById('regEmail').value.trim().toLowerCase();
-  const pass    = document.getElementById('regPassword').value;
-  const confirm = document.getElementById('regConfirm').value;
-  const errEl   = document.getElementById('registerError');
-  errEl.textContent = '';
-  if (!first || !last || !email || !pass) { errEl.textContent = 'Please fill in all fields.'; return; }
-  if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
-  if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
-  const users = getUsers();
-  if (users.find(u => u.email === email)) { errEl.textContent = 'An account with this email already exists.'; return; }
-  const newUser = { firstName: first, lastName: last, email, password: btoa(pass), createdAt: new Date().toISOString() };
-  users.push(newUser);
-  saveUsers(users);
-  setCurrentUser({ name: first + ' ' + last, email, firstName: first });
-  closeLoginModal();
-  updateUserUI();
-  showToast('🎉 Welcome to VastraAyu, <span>' + first + '!</span>');
-}
-
-function handleLogout() {
-  clearSession();
-  closeUserMenu();
-  updateUserUI();
-  showToast('You have been signed out.');
-}
-
-function updateUserUI() {
-  const user = getCurrentUser();
-  const btn  = document.getElementById('userNavBtn');
-  const dd   = document.getElementById('userDropdown');
-  if (user) {
-    const initials = user.firstName ? user.firstName[0].toUpperCase() : '?';
-    btn.innerHTML  = `<div class="user-avatar">${initials}</div>`;
-    dd.innerHTML   = `
-      <div class="user-dropdown-header">
-        <div class="user-dropdown-name">${user.name}</div>
-        <div class="user-dropdown-email">${user.email}</div>
-      </div>
-      <button class="user-dropdown-item" onclick="closeUserMenu()">📦 My Orders</button>
-      <button class="user-dropdown-item" onclick="openWishlistSidebar()">❤️ Wishlist</button>
-      <button class="user-dropdown-item" onclick="closeUserMenu()">⚙️ Account Settings</button>
-      <button class="user-dropdown-item logout" onclick="handleLogout()">🚪 Sign Out</button>`;
-  } else {
-    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>`;
-    dd.innerHTML  = `
-      <div style="padding:14px 18px 6px;border-bottom:1px solid var(--border)">
-        <div class="user-dropdown-name" style="font-size:11px;letter-spacing:2px">ACCOUNT</div>
-      </div>
-      <button class="user-dropdown-item" onclick="closeUserMenu();openLoginModal('login')">🔑 Sign In</button>
-      <button class="user-dropdown-item" onclick="closeUserMenu();openLoginModal('register')">✨ Create Account</button>`;
-  }
-}
-
-function toggleUserMenu() {
-  const dd = document.getElementById('userDropdown');
-  const user = getCurrentUser();
-  if (!user) { openLoginModal('login'); return; }
-  dd.classList.toggle('open');
-}
-
-function closeUserMenu() {
-  document.getElementById('userDropdown').classList.remove('open');
-}
-
-function openLoginModal(tab) {
-  document.getElementById('loginModal').classList.add('open');
-  if (tab) switchLoginTab(tab, null);
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('registerError').textContent = '';
-}
-function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
-
-function switchLoginTab(tab, btn) {
-  document.getElementById('loginPane').style.display    = tab === 'login'    ? 'block' : 'none';
-  document.getElementById('registerPane').style.display = tab === 'register' ? 'block' : 'none';
-  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-}
-
-// Close user dropdown when clicking outside
-document.addEventListener('click', function(e) {
-  const wrap = document.getElementById('userMenuWrap');
-  if (wrap && !wrap.contains(e.target)) closeUserMenu();
-});
 
 
 /* ─── TOAST ─── */
@@ -2328,8 +1966,6 @@ function showToast(msg) {
 }
 
 /* ─── CLOSE MODALS ON OVERLAY CLICK ─── */
-document.getElementById('checkoutModal').addEventListener('click', function(e) { if(e.target===this) closeCheckout(); });
-document.getElementById('loginModal').addEventListener('click', function(e) { if(e.target===this) closeLoginModal(); });
 
 /* ─── WHATSAPP ORDER ─── */
 function openWhatsAppOrder() {
@@ -2385,6 +2021,13 @@ function toggleWishlistFromModal() {
 
 function updateWishlistUI() {
   const list = getWishlist();
+
+  // Update nav wishlist badge
+  const wlBadge = document.getElementById('wlBadge');
+  if (wlBadge) {
+    wlBadge.textContent = list.length;
+    wlBadge.style.display = list.length > 0 ? 'flex' : 'none';
+  }
 
   // Update all card heart buttons
   products.forEach(p => {
@@ -2442,7 +2085,6 @@ function toggleWishlist_sidebar() {
 
 function openWishlistSidebar() {
   toggleWishlist_sidebar();
-  closeUserMenu();
 }
 
 /* ─── PRODUCT DETAIL MODAL ─── */
@@ -2609,7 +2251,6 @@ Could you please confirm availability and share payment details? Thank you!`;
 /* ─── INIT ─── */
 renderFeatured();
 updateCartUI();
-updateUserUI();
 updateWishlistUI();
 
 document.addEventListener('keydown', function(e) {
